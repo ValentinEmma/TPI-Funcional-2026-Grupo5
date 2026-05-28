@@ -5,12 +5,12 @@
 ;; IMPACTO: No destructiva
 ;; ========================================================
 
-(defun sistema-semaforo (estado segundos)
-			(if (and (symbolp estado)(numberp segundos))
+(defun sistema-semaforo (estadoActual cambiar segundos)
+			(if (and (symbolp estadoActual)(numberp cambiar) (symbolp segundos))
 
 			    (progn
 			        (print "=== SISTEMA DE SEMAFOROS ===")
-			        (print (transicion estado))
+			        (print (transicion estadoActual cambiar))
 			        (print (timer segundos))
 			    )
 			    (print "argumentos invalidos")
