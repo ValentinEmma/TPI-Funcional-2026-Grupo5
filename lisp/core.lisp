@@ -53,7 +53,7 @@
 						((and (>= tiempo-ciclo 0) (<= tiempo-ciclo 89)) 'ROJO)
 						((and (>= tiempo-ciclo 90) (<= tiempo-ciclo 95)) 'AMARILLO)
 						((and (>=  tiempo-ciclo 96) (<= tiempo-ciclo 215)) 'VERDE)
-						(t 'ERROR')
+						(t 'ERROR)
 					)
 				)
 )
