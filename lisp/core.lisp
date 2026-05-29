@@ -6,7 +6,7 @@
 ;; ========================================================
 
 (defun sistema-semaforo (estadoActual cambiar segundos)
-			(if (and (symbolp estadoActual)(numberp cambiar) (symbolp segundos))
+			(if (and (symbolp estadoActual)(symbolp cambiar) (numberp segundos))
 
 			    (progn
 			        (print "=== SISTEMA DE SEMAFOROS ===")
@@ -14,7 +14,7 @@
 			        (print (timer segundos))
 			    )
 			    (print "argumentos invalidos")
-			)
+			)	
 )
 
 ;; ========================================================
@@ -57,4 +57,3 @@
 					)
 				)
 )
-
