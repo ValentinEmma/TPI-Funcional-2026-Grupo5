@@ -57,3 +57,19 @@
 					)
 				)
 )
+
+;; ==========================
+;; CASOS DE PRUEBA
+;; ==========================
+
+;; Caso normal
+(sistema-semaforo 'en-rojo 'verde 50)
+
+;; Caso normal
+(sistema-semaforo 'en-verde 'amarillo 150)
+
+;; Caso alternativo
+(sistema-semaforo 'en-rojo 'amarillo 80)
+
+;; Caso de error
+(sistema-semaforo 5 'verde 50)
