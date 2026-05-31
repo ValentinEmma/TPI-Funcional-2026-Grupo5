@@ -7,7 +7,8 @@ Trabajo Integrador de Paradigmas de Programación.
 * Common Lisp
 * Haskell
 * Quicklisp
-* local-time
+* local-time a
+* 
 
 Integrantes
 
