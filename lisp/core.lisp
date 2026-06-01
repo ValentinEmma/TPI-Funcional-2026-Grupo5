@@ -12,6 +12,7 @@
 			        (print "=== SISTEMA DE SEMAFOROS ===")
 			        (print (transicion estadoActual cambiar))
 			        (print (timer segundos))
+			        (logging-auditoria segundos estadoActual cambiar)
 			    )
 			    (print "argumentos invalidos")
 			)	
@@ -56,6 +57,21 @@
 						(t 'ERROR)
 					)
 				)
+)
+
+;; ========================================================
+;; FUNCIÓN: logging-auditoria
+;; NATURALEZA: Impura
+;; ESTRATEGIA: Modular
+;; IMPACTO: No destructiva
+;; ========================================================
+(defun logging-auditoria (segundos estadoActual cambiar)
+	
+	(format t 
+		"~%Tiempo ~a: la luz ha cambiado de ~a a ~a~%" segundos estadoActual cambiar)
+
+		'REGISTRADO-EXITOSAMENTE
+
 )
 
 ;; ==========================
