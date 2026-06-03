@@ -181,15 +181,11 @@
 ;; IMPACTO: No destructiva
 ;; ========================================================
 (defun informe-distribucion-60min ()
-  "Calcula el porcentaje de cada color en 1 hora (3600 segundos)"
-  (let* ((tiempo-total 3600)
-         (ciclo-total (+ 90 6 120)) ; Duración de un ciclo completo (216s)
-         (proporcion (/ tiempo-total ciclo-total))) ; Cuántas veces entra el ciclo en 1h
-    
+  (let ((ciclo-total (+ 90 6 120)) ; Duración de un ciclo completo (216s)
     (list 
       (list 'ROJO     (calcular-porcentaje 90 ciclo-total))
       (list 'AMARILLO (calcular-porcentaje 6 ciclo-total))
-      (list 'VERDE    (calcular-porcentaje 120 ciclo-total)))))
+      (list 'VERDE    (calcular-porcentaje 120 ciclo-total))))))
 
 ;; ========================================================
 ;; FUNCIÓN: calcular-porcentaje
@@ -198,7 +194,6 @@
 ;; IMPACTO: No destructiva
 ;; ========================================================
 (defun calcular-porcentaje (tiempo-color tiempo-ciclo)
-  "Retorna el porcentaje redondeado a dos decimales"
   (let ((resultado (* (/ tiempo-color (float tiempo-ciclo)) 100)))
     (/ (round (* resultado 100)) 100.0)))
 
