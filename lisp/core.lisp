@@ -90,6 +90,89 @@
 ;; Caso de error
 (sistema-semaforo 5 'verde 50)
 
+;; ========================================================
+;; FUNCIÓN: duracion-ciclo
+;; NATURALEZA: Impura (realiza salida por pantalla mediante
+;; "format")
+;; ESTRATEGIA: Función simple (no recursiva, no utiliza
+;; funciones de orden superior)
+;; IMPACTO: No destructiva (no modifica ninguna estructura
+;; de datos existente)
+;; ========================================================
+
+(defun duracion-ciclo(rojo amarillo verde)
+  (cond
+    (
+    	(not (and (integerp rojo)(integerp amarillo)(integerp verde)) )
+     "Error: uno de los parametros no es un numero entero"
+    )
+    (t
+     (let ((tiempo-un-ciclo (+ rojo amarillo verde)) )
+       (format t "El ciclo dura ~a's~%" tiempo-un-ciclo)
+       ;;se retorna el valor calculado 
+       ;;por si es necesaria su utilizacion posteriormente
+       tiempo-un-ciclo
+      )
+    )
+  )
+)
+
+;; ==========================
+;; CASOS DE PRUEBA
+;; ==========================
+
+;;caso normal
+(duracion-ciclo 30 10 60)
+
+;;caso normal
+
+;;caso error
+(duracion-ciclo 1.2 20 1.2)
+
+;;caso error
+(duracion-ciclo 'veinte 'cuarenta 'cincuenta)
+
+;; ========================================================
+;; FUNCIÓN: recomendacion-ciclo
+;; NATURALEZA: Impura (realiza salida por pantalla)
+;; ESTRATEGIA: Función simple (implementada mediante cond)
+;; IMPACTO: No destructiva (no modifica estructuras de
+;; datos existentes)
+;; ========================================================
+
+(defun recomendacion-ciclo (total-ciclo)
+(defun recomendacion-ciclo(total-ciclo)
+	(cond 
+		((> 35 total-ciclo) "recomendacion: aumentar el tiempo del ciclo para obtener entre 35 a 150 segundos")
+		((and (> total-ciclo 35) (> 150 total-ciclo)) "¡su tiempo esta en los estandares optimos!" )
+		((> total-ciclo 150) "recomendacion: disminuya su tiempo paraa obtener un ciclo entre 35 a 150 segundos") 
+
+	)
+)
+;; ==========================
+;; CASOS DE PRUEBA
+;; ==========================
+
+;;caso normal
+(recomendacion-ciclo 120)
+
+
+;;caso normal
+(recomendacion-ciclo 20)
+
+
+;;caso normal
+(recomendacion-ciclo 160)
+
+
+
+;;caso error exepcion
+;;ACLARACION: este tipo de error no sucederia 
+;;ya q se usaria la funcion "(duracion-ciclo)"
+;;la cual ya verifica si los parametros son unicamente enteros
+(recomendacion-ciclo 120.3)
+
+
 
 ;; ========================================================
 ;; FUNCIÓN: informe-distribucion-60min
@@ -118,3 +201,10 @@
   "Retorna el porcentaje redondeado a dos decimales"
   (let ((resultado (* (/ tiempo-color (float tiempo-ciclo)) 100)))
     (/ (round (* resultado 100)) 100.0)))
+
+;; ========================================================
+;; FUNCIÓN: analisis-de-ciclos
+;; NATURALEZA: Pura
+;; ESTRATEGIA: Función de Orden Superior (aritmética básica)
+;; IMPACTO: No destructiva
+;; ========================================================
