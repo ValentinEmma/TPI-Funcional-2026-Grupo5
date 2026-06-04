@@ -140,7 +140,6 @@
 ;; datos existentes)
 ;; ========================================================
 
-(defun recomendacion-ciclo (total-ciclo)
 (defun recomendacion-ciclo(total-ciclo)
 	(cond 
 		((> 35 total-ciclo) "recomendacion: aumentar el tiempo del ciclo para obtener entre 35 a 150 segundos")
