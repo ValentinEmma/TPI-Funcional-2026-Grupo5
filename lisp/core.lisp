@@ -25,6 +25,7 @@
 ;; IMPACTO: No destructiva
 ;; ========================================================
 (defun transicion (estadoActual cambiar)
+	(if (and (symbolp estadoActual) (symbolp cambiar))
 					(cond
 						((and (equal estadoActual 'en-rojo) (equal cambiar 'verde))
 								(list estadoActual "cambiar a verde"))
@@ -37,7 +38,33 @@
 							(list estadoActual "accion por defecto")
 						)
 					)
+		'ERROR
+	)
 )
+
+;; Caso normal
+(transicion 'en-rojo 'verde)
+
+;; Resultado esperado:
+;; (EN-ROJO "cambiar a verde")
+
+;; Caso normal
+(transicion 'en-verde 'amarillo)
+
+;; Resultado esperado:
+;; (EN-VERDE "cambiar a amarillo")
+
+;; Caso alternativo
+(transicion 'en-rojo 'amarillo)
+
+;; Resultado esperado:
+;; (EN-ROJO "accion por defecto")
+
+;; Caso de error
+(transicion 10 'verde)
+
+;; Resultado esperado:
+;; ERROR
 
 
 ;; ========================================================
@@ -58,6 +85,37 @@
 					)
 				)
 )
+
+;; Caso normal
+(timer 50)
+
+;; Resultado esperado:
+;; ROJO
+
+;; Caso normal
+(timer 92)
+
+;; Resultado esperado:
+;; AMARILLO
+
+;; Caso normal
+(timer 150)
+
+;; Resultado esperado:
+;; VERDE
+
+;; Caso alternativo
+;; Comienza un nuevo ciclo
+(timer 216)
+
+;; Resultado esperado:
+;; ROJO
+
+;; Caso de error
+(timer 'hola)
+
+;; Resultado esperado:
+;; Error
 
 ;; ========================================================
 ;; FUNCIÓN: logging-auditoria
@@ -228,6 +286,21 @@
 ;; Caso normal
 (informe-distribucion-60min)
 
+;; Resultado esperado:
+;; ((ROJO 41.67)
+;;  (AMARILLO 2.78)
+;;  (VERDE 55.56))
+
+;; Caso alternativo
+;; Ejecutar varias veces para verificar que siempre
+;; devuelve los mismos porcentajes
+(informe-distribucion-60min)
+
+;; Resultado esperado:
+;; ((ROJO 41.67)
+;;  (AMARILLO 2.78)
+;;  (VERDE 55.56))
+
 ;; ========================================================
 ;; FUNCIÓN: calcular-porcentaje
 ;; NATURALEZA: Pura
@@ -237,10 +310,3 @@
 (defun calcular-porcentaje (tiempo-color tiempo-ciclo)
   (let ((resultado (* (/ tiempo-color (float tiempo-ciclo)) 100)))
     (/ (round (* resultado 100)) 100.0)))
-
-;; ========================================================
-;; FUNCIÓN: analisis-de-ciclos
-;; NATURALEZA: Pura
-;; ESTRATEGIA: Función de Orden Superior (aritmética básica)
-;; IMPACTO: No destructiva
-;; ========================================================
