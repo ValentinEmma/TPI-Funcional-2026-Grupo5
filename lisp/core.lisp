@@ -12,7 +12,7 @@
 			        (print "=== SISTEMA DE SEMAFOROS ===")
 			        (print (transicion estadoActual cambiar))
 			        (print (timer segundos))
-			        (logging-auditoria segundos estadoActual cambiar)
+			        (print (logging-auditoria segundos estadoActual cambiar))
 			    )
 			    (print "argumentos invalidos")
 			)	
@@ -43,25 +43,25 @@
 )
 
 ;; Caso normal
-(transicion 'en-rojo 'verde)
+;(transicion 'en-rojo 'verde)
 
 ;; Resultado esperado:
 ;; (EN-ROJO "cambiar a verde")
 
 ;; Caso normal
-(transicion 'en-verde 'amarillo)
+;(transicion 'en-verde 'amarillo)
 
 ;; Resultado esperado:
 ;; (EN-VERDE "cambiar a amarillo")
 
 ;; Caso alternativo
-(transicion 'en-rojo 'amarillo)
+;(transicion 'en-rojo 'amarillo)
 
 ;; Resultado esperado:
 ;; (EN-ROJO "accion por defecto")
 
 ;; Caso de error
-(transicion 10 'verde)
+;(transicion 10 'verde)
 
 ;; Resultado esperado:
 ;; ERROR
@@ -87,32 +87,32 @@
 )
 
 ;; Caso normal
-(timer 50)
+;(timer 50)
 
 ;; Resultado esperado:
 ;; ROJO
 
 ;; Caso normal
-(timer 92)
+;(timer 92)
 
 ;; Resultado esperado:
 ;; AMARILLO
 
 ;; Caso normal
-(timer 150)
+;(timer 150)
 
 ;; Resultado esperado:
 ;; VERDE
 
 ;; Caso alternativo
 ;; Comienza un nuevo ciclo
-(timer 216)
+;(timer 216)
 
 ;; Resultado esperado:
 ;; ROJO
 
 ;; Caso de error
-(timer 'hola)
+;(timer 'hola)
 
 ;; Resultado esperado:
 ;; Error
@@ -137,16 +137,16 @@
 ;; ==========================
 
 ;; Caso normal
-(sistema-semaforo 'en-rojo 'verde 50)
+;(sistema-semaforo 'en-rojo 'verde 50)
 
 ;; Caso normal
-(sistema-semaforo 'en-verde 'amarillo 150)
+;(sistema-semaforo 'en-verde 'amarillo 150)
 
 ;; Caso alternativo
-(sistema-semaforo 'en-rojo 'amarillo 80)
+;(sistema-semaforo 'en-rojo 'amarillo 80)
 
 ;; Caso de error
-(sistema-semaforo 5 'verde 50)
+;(sistema-semaforo 5 'verde 50)
 
 ;; ========================================================
 ;; FUNCIÓN: duracion-ciclo
@@ -180,15 +180,15 @@
 ;; ==========================
 
 ;;caso normal
-(duracion-ciclo 30 10 60)
+;(duracion-ciclo 30 10 60)
 
 ;;caso normal
 
 ;;caso error
-(duracion-ciclo 1.2 20 1.2)
+;(duracion-ciclo 1.2 20 1.2)
 
 ;;caso error
-(duracion-ciclo 'veinte 'cuarenta 'cincuenta)
+;(duracion-ciclo 'veinte 'cuarenta 'cincuenta)
 
 ;; ========================================================
 ;; FUNCIÓN: recomendacion-ciclo
@@ -211,23 +211,23 @@
 ;; ==========================
 
 ;;caso normal
-(recomendacion-ciclo 120)
+;(recomendacion-ciclo 120)
 
 
 ;;caso de ciclo demasiado corto
-(recomendacion-ciclo 20)
+;(recomendacion-ciclo 20)
 
 
 ;; Caso de ciclo demasiado largo
-(recomendacion-ciclo 160)
+;(recomendacion-ciclo 160)
 
 
 
-;;caso error exepcion
+;;caso error excepcion
 ;;ACLARACION: este tipo de error no sucederia 
-;;ya q se usaria la funcion "(duracion-ciclo)"
+;;ya que se usaria la funcion "(duracion-ciclo)"
 ;;la cual ya verifica si los parametros son unicamente enteros
-(recomendacion-ciclo 120.3)
+;(recomendacion-ciclo 120.3)
 
 ;; ========================================================
 ;; FUNCIÓN: ciclos-por-tiempo
@@ -247,7 +247,7 @@
 ;; Caso normal
 ;; 15 minutos = 900 segundos
 ;; 900 / 216 = 4 ciclos completos
-(ciclos-por-tiempo 15)
+;(ciclos-por-tiempo 15)
 
 ;; Resultado esperado:
 ;; 4
@@ -255,14 +255,14 @@
 ;; Caso alternativo
 ;; Tiempo menor a un ciclo completo
 ;; 3 minutos = 180 segundos
-(ciclos-por-tiempo 3)
+;(ciclos-por-tiempo 3)
 
 ;; Resultado esperado:
 ;; 0
 
 ;; Caso de error
 ;; Se ingresa un símbolo
-(ciclos-por-tiempo 'hola)
+;(ciclos-por-tiempo 'hola)
 
 ;; Resultado esperado:
 ;; ERROR
@@ -284,7 +284,7 @@
 )
 
 ;; Caso normal
-(informe-distribucion-60min)
+;(informe-distribucion-60min)
 
 ;; Resultado esperado:
 ;; ((ROJO 41.67)
@@ -294,7 +294,7 @@
 ;; Caso alternativo
 ;; Ejecutar varias veces para verificar que siempre
 ;; devuelve los mismos porcentajes
-(informe-distribucion-60min)
+;(informe-distribucion-60min)
 
 ;; Resultado esperado:
 ;; ((ROJO 41.67)
