@@ -143,7 +143,7 @@
 (defun recomendacion-ciclo(total-ciclo)
 	(cond 
 		((> 35 total-ciclo) "recomendacion: aumentar el tiempo del ciclo para obtener entre 35 a 150 segundos")
-		((and (> total-ciclo 35) (> 150 total-ciclo)) "¡su tiempo esta en los estandares optimos!" )
+		((and (>= total-ciclo 35) (>= 150 total-ciclo)) "¡su tiempo esta en los estandares optimos!" )
 		((> total-ciclo 150) "recomendacion: disminuya su tiempo paraa obtener un ciclo entre 35 a 150 segundos") 
 
 	)
@@ -160,7 +160,7 @@
 (recomendacion-ciclo 20)
 
 
-;;caso normal
+;; Caso de ciclo demasiado corto
 (recomendacion-ciclo 160)
 
 
@@ -216,11 +216,17 @@
 ;; IMPACTO: No destructiva
 ;; ========================================================
 (defun informe-distribucion-60min ()
-  (let ((ciclo-total (+ 90 6 120))) ; Duración de un ciclo completo (216s)
-    (list 
-      (list 'ROJO     (calcular-porcentaje 90 ciclo-total))
-      (list 'AMARILLO (calcular-porcentaje 6 ciclo-total))
-      (list 'VERDE    (calcular-porcentaje 120 ciclo-total))))))
+	  (let ((ciclo-total (+ 90 6 120))) ; Duración de un ciclo completo (216s)
+	    (list 
+	      (list 'ROJO     (calcular-porcentaje 90 ciclo-total))
+	      (list 'AMARILLO (calcular-porcentaje 6 ciclo-total))
+	      (list 'VERDE    (calcular-porcentaje 120 ciclo-total))
+		)
+	 )
+)
+
+;; Caso normal
+(informe-distribucion-60min)
 
 ;; ========================================================
 ;; FUNCIÓN: calcular-porcentaje
