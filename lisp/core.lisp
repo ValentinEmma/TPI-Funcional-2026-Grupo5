@@ -143,7 +143,7 @@
 (defun recomendacion-ciclo(total-ciclo)
 	(cond 
 		((> 35 total-ciclo) "recomendacion: aumentar el tiempo del ciclo para obtener entre 35 a 150 segundos")
-		((and (>= total-ciclo 35) (>= 150 total-ciclo)) "¡su tiempo esta en los estandares optimos!" )
+		((and (>= total-ciclo 35) (<= 150 total-ciclo)) "¡su tiempo esta en los estandares optimos!" )
 		((> total-ciclo 150) "recomendacion: disminuya su tiempo paraa obtener un ciclo entre 35 a 150 segundos") 
 
 	)
@@ -156,11 +156,11 @@
 (recomendacion-ciclo 120)
 
 
-;;caso normal
+;;caso de ciclo demasiado corto
 (recomendacion-ciclo 20)
 
 
-;; Caso de ciclo demasiado corto
+;; Caso de ciclo demasiado largo
 (recomendacion-ciclo 160)
 
 
