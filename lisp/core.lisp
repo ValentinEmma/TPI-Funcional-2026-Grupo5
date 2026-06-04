@@ -171,7 +171,43 @@
 ;;la cual ya verifica si los parametros son unicamente enteros
 (recomendacion-ciclo 120.3)
 
+;; ========================================================
+;; FUNCIÓN: ciclos-por-tiempo
+;; NATURALEZA: Pura
+;; ESTRATEGIA: Aritmética
+;; IMPACTO: No destructiva
+;; ========================================================
 
+(defun ciclos-por-tiempo (minutos)
+    (if (numberp minutos)
+        (floor
+            (/ (* minutos 60) 216)
+        )
+        'ERROR
+    )
+)
+;; Caso normal
+;; 15 minutos = 900 segundos
+;; 900 / 216 = 4 ciclos completos
+(ciclos-por-tiempo 15)
+
+;; Resultado esperado:
+;; 4
+
+;; Caso alternativo
+;; Tiempo menor a un ciclo completo
+;; 3 minutos = 180 segundos
+(ciclos-por-tiempo 3)
+
+;; Resultado esperado:
+;; 0
+
+;; Caso de error
+;; Se ingresa un símbolo
+(ciclos-por-tiempo 'hola)
+
+;; Resultado esperado:
+;; ERROR
 
 ;; ========================================================
 ;; FUNCIÓN: informe-distribucion-60min
@@ -180,7 +216,7 @@
 ;; IMPACTO: No destructiva
 ;; ========================================================
 (defun informe-distribucion-60min ()
-  (let ((ciclo-total (+ 90 6 120)) ; Duración de un ciclo completo (216s)
+  (let ((ciclo-total (+ 90 6 120))) ; Duración de un ciclo completo (216s)
     (list 
       (list 'ROJO     (calcular-porcentaje 90 ciclo-total))
       (list 'AMARILLO (calcular-porcentaje 6 ciclo-total))
