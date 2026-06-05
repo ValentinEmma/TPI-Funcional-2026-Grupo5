@@ -19,40 +19,53 @@
 )
 
 ;; ========================================================
-;; FUNCIÓN: transicion
+;; FUNCIÓN: transicion-ext-1
 ;; NATURALEZA: Pura
 ;; ESTRATEGIA: Selectiva y Modular
 ;; IMPACTO: No destructiva
 ;; ========================================================
-(defun transicion (estadoActual cambiar)
-	(if (and (symbolp estadoActual) (symbolp cambiar))
-					(cond
-						((and (equal estadoActual 'en-rojo) (equal cambiar 'verde))
-								(list estadoActual "cambiar a verde"))
 
-						((and (equal estadoActual 'en-amarillo) (equal cambiar 'rojo))
-								(list estadoActual "cambiar a rojo"))
-						((and (equal estadoActual 'en-verde) (equal cambiar 'amarillo))
-								(list estadoActual "cambiar a amarillo"))
-						(t 
-							(list estadoActual "accion por defecto")
-						)
-					)
-		'ERROR
-	)
+(defun transicion (estadoActual cambiar)
+  (cond 
+    ( (not (and (symbolp estadoActual) (symbolp cambiar)))
+    	(pprint "error en los datos ingresados"))
+
+    ( (and (equal estadoActual 'en-rojo) (equal cambiar 'intermitente))
+         (list estadoActual "cambiar a intermitente"))
+
+    ( (and (equal estadoActual 'intermitente) (equal cambiar 'amarillo))
+         (list estadoActual "cambiar a amarillo"))
+
+    ( (and (equal estadoActual 'en-amarillo)(equal cambiar 'intermitente))
+         (list estadoActual "cambiar a intermitente"))
+
+    ( (and (equal estadoActual 'intermitente)(equal cambiar 'verde))
+         (list estadoActual "cambiar a verde"))
+
+    ( (and (equal estadoActual 'verde)(equal cambiar 'intermitente))
+         (list estadoActual "cambiar a intermitente"))
+
+    ( (and (equal estadoActual 'intermitente)(equal cambiar 'rojo))
+         (list estadoActual "cambiar a intermitente"))
+
+    (t
+         (list estadoActual "accion por defecto"))
+   )
 )
 
-;; Caso normal
-;(transicion 'en-rojo 'verde)
 
-;; Resultado esperado:
-;; (EN-ROJO "cambiar a verde")
 
 ;; Caso normal
-;(transicion 'en-verde 'amarillo)
+;(transicion 'en-rojo 'intermitente)
 
 ;; Resultado esperado:
-;; (EN-VERDE "cambiar a amarillo")
+;; (EN-ROJO "cambiar a intermitente")
+
+;; Caso normal
+;(transicion 'intermitente 'amarillo)
+
+;; Resultado esperado:
+;; (EN-intermitente "cambiar a amarillo")
 
 ;; Caso alternativo
 ;(transicion 'en-rojo 'amarillo)
@@ -68,14 +81,28 @@
 
 
 ;; ========================================================
-;; FUNCIÓN: timer
+;; FUNCIÓN: timer-ext-1
 ;; NATURALEZA: Pura
 ;; ESTRATEGIA: Selectiva
 ;; IMPACTO: No destructiva
 ;; ========================================================
+
+(defun timer (segundos)
+  (let ((tiempo-ciclo (mod segundos 222)))
+
+    (cond
+      ((and (>= tiempo-ciclo 0)(<= tiempo-ciclo 89))'ROJO)
+      ((and (>= tiempo-ciclo 90)(<= tiempo-ciclo 92))'INTERMITENTE)
+      ((and (>= tiempo-ciclo 93)(<= tiempo-ciclo 98))'AMARILLO)
+      ((and (>= tiempo-ciclo 99)(<= tiempo-ciclo 101))'INTERMITENTE)
+      ((and (>= tiempo-ciclo 102)(<= tiempo-ciclo 221))'VERDE)
+      (t 'ERROR))))
+
+
+
 (defun timer (segundos)
 				(let
-					((tiempo-ciclo (mod segundos 216)))
+					((tiempo-ciclo (mod segundos 222)))
 
 					(cond
 						((and (>= tiempo-ciclo 0) (<= tiempo-ciclo 89)) 'ROJO)
@@ -86,17 +113,34 @@
 				)
 )
 
+
 ;; Caso normal
 ;(timer 50)
 
 ;; Resultado esperado:
 ;; ROJO
 
+
 ;; Caso normal
-;(timer 92)
+;(timer 91)
+
+;; Resultado esperado:
+;; INTERMITENTE
+
+
+;; Caso normal
+;(timer 95)
 
 ;; Resultado esperado:
 ;; AMARILLO
+
+
+;; Caso normal
+;(timer 100)
+
+;; Resultado esperado:
+;; INTERMITENTE
+
 
 ;; Caso normal
 ;(timer 150)
@@ -104,25 +148,30 @@
 ;; Resultado esperado:
 ;; VERDE
 
+
 ;; Caso alternativo
 ;; Comienza un nuevo ciclo
-;(timer 216)
+;(timer 222)
 
 ;; Resultado esperado:
 ;; ROJO
+
 
 ;; Caso de error
 ;(timer 'hola)
 
 ;; Resultado esperado:
-;; Error
+;; ERROR
+
 
 ;; ========================================================
-;; FUNCIÓN: logging-auditoria
+;; FUNCIÓN: logging-auditoria 
 ;; NATURALEZA: Impura
 ;; ESTRATEGIA: Modular
 ;; IMPACTO: No destructiva
 ;; ========================================================
+
+
 (defun logging-auditoria (segundos estadoActual cambiar)
 	
 	(format t 
@@ -148,8 +197,10 @@
 ;; Caso de error
 ;(sistema-semaforo 5 'verde 50)
 
+
+
 ;; ========================================================
-;; FUNCIÓN: duracion-ciclo
+;; FUNCIÓN: duracion-ciclo-ext-1
 ;; NATURALEZA: Impura (realiza salida por pantalla mediante
 ;; "format")
 ;; ESTRATEGIA: Función simple (no recursiva, no utiliza
@@ -158,14 +209,14 @@
 ;; de datos existente)
 ;; ========================================================
 
-(defun duracion-ciclo(rojo amarillo verde)
+(defun duracion-ciclo(rojo intermitente amarillo verde)
   (cond
     (
-    	(not (and (integerp rojo)(integerp amarillo)(integerp verde)) )
+    	(not (and (integerp intermitente) (integerp rojo)(integerp amarillo)(integerp verde)) )
      "Error: uno de los parametros no es un numero entero"
     )
     (t
-     (let ((tiempo-un-ciclo (+ rojo amarillo verde)) )
+     (let ((tiempo-un-ciclo (+ intermitente rojo amarillo verde intermitente)) )
        (format t "El ciclo dura ~a's~%" tiempo-un-ciclo)
        ;;se retorna el valor calculado 
        ;;por si es necesaria su utilizacion posteriormente
@@ -180,18 +231,21 @@
 ;; ==========================
 
 ;;caso normal
-;(duracion-ciclo 30 10 60)
+;(duracion-ciclo 6 30 10 60)
 
 ;;caso normal
 
 ;;caso error
-;(duracion-ciclo 1.2 20 1.2)
+;(duracion-ciclo 7 1.2 20 1.2)
 
 ;;caso error
-;(duracion-ciclo 'veinte 'cuarenta 'cincuenta)
+;(duracion-ciclo 'siete 'veinte 'cuarenta 'cincuenta)
+
+
+
 
 ;; ========================================================
-;; FUNCIÓN: recomendacion-ciclo
+;; FUNCIÓN: recomendacion-ciclo 
 ;; NATURALEZA: Impura (realiza salida por pantalla)
 ;; ESTRATEGIA: Función simple (implementada mediante cond)
 ;; IMPACTO: No destructiva (no modifica estructuras de
@@ -230,11 +284,21 @@
 ;(recomendacion-ciclo 120.3)
 
 ;; ========================================================
-;; FUNCIÓN: ciclos-por-tiempo
+;; FUNCIÓN: ciclos-por-tiempo-ext-1
 ;; NATURALEZA: Pura
 ;; ESTRATEGIA: Aritmética
 ;; IMPACTO: No destructiva
 ;; ========================================================
+
+(defun ciclos-por-tiempo (minutos)
+    (if (numberp minutos)
+        (floor
+            (/ (* minutos 60) 222)
+        )
+        'ERROR
+    )
+)
+
 
 (defun ciclos-por-tiempo (minutos)
     (if (numberp minutos)
