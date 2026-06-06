@@ -138,14 +138,33 @@
 
 
 (defun logging-auditoria (segundos estadoActual cambiar)
-	
+ 	(let ((fechainicio (local-time:encode-timestamp
+ 						0    ; nanosegundos
+ 						00   ; segundos
+ 						00   ; minutos
+ 						12   ; hora
+ 						1    ; día
+ 						1    ; mes
+ 						2026)))
+
 	(with-open-file (stream "informe-ejecucion-semaforo.txt" :direction :output :if-exists :append)   			
    			(format stream 
-		"~%Tiempo ~a: la luz ha cambiado de ~a a ~a~%" segundos estadoActual cambiar)
-
-   			'REGISTRADO-EXITOSAMENTE
-   		)
-	
+   				"~a - La luz ha cambiado de ~a a ~a~%"
+					(local-time:format-timestring nil
+ 					(local-time:timestamp+ fechainicio segundos :sec)
+ 							:format '((:year 4) "-"
+				  						(:month 2) "-"
+				  						(:day 2) "-"
+				  						" "
+				  						(:hour 2) ":"
+				  						(:min 2) ":"
+				  						(:sec 2))
+   				)
+   			estadoActual
+   			cambiar	
+   			)
+   )
+   )
 )
 
 ;; ==========================
