@@ -118,6 +118,19 @@
 ;; Error
 
 ;; ========================================================
+;; FUNCIÓN: crea-informe
+;; NATURALEZA: Impura (escribe en archivo)
+;; ESTRATEGIA: Modular
+;; IMPACTO: No destructiva
+;; ========================================================
+(defun crea-informe()
+ 	(with-open-file (stream "informe-ejecucion-semaforo.txt" :direction :output :if-exists :error :if-does-not-exist :create)
+ 		(format stream "Informe de Ejecución del Sistema Semafórico~%")
+   		(format stream "=========================================~%")
+ 	)
+ )
+
+;; ========================================================
 ;; FUNCIÓN: logging-auditoria
 ;; NATURALEZA: Impura
 ;; ESTRATEGIA: Modular
@@ -136,17 +149,20 @@
 ;; CASOS DE PRUEBA
 ;; ==========================
 
-;; Caso normal
-;(sistema-semaforo 'en-rojo 'verde 50)
+;; CASO NORMAL
+;(crea-informe)
+;(logging-auditoria 100 'en-rojo 'amarillo)
 
-;; Caso normal
-;(sistema-semaforo 'en-verde 'amarillo 150)
+;; Se debe recibir:
+;NIL (respuesta de que se creó el informe con el encabezado)
+;"Tiempo 100: la luz ha cambiado de EN-ROJO a AMARILLO" (linea que se muestra en el archivo) 
 
 ;; Caso alternativo
-;(sistema-semaforo 'en-rojo 'amarillo 80)
+;(logging-auditoria 'en-rojo 'amarillo 80)
 
 ;; Caso de error
-;(sistema-semaforo 5 'verde 50)
+;llamar a crear-informe cuando ya fue creado, devolverá "ERROR"
+;(logging-auditoria 5 'verde 50)
 
 ;; ========================================================
 ;; FUNCIÓN: duracion-ciclo
