@@ -130,7 +130,6 @@
  )
 
 ;; ========================================================
-;; FUNCIÓN: logging-auditoria
 ;; FUNCIÓN: logging-auditoria 
 ;; NATURALEZA: Impura
 ;; ESTRATEGIA: Modular
@@ -140,11 +139,13 @@
 
 (defun logging-auditoria (segundos estadoActual cambiar)
 	
-	(format t 
+	(with-open-file (stream "informe-ejecucion-semaforo.txt" :direction :output :if-exists :append)   			
+   			(format stream 
 		"~%Tiempo ~a: la luz ha cambiado de ~a a ~a~%" segundos estadoActual cambiar)
 
-		'REGISTRADO-EXITOSAMENTE
-
+   			'REGISTRADO-EXITOSAMENTE
+   		)
+	
 )
 
 ;; ==========================
