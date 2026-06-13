@@ -284,8 +284,7 @@
 ;; IMPACTO: No destructiva
 ;; ========================================================
 (defun calcular-porcentaje (tiempo-color ciclo-total)
-  (let ((resultado (* (/ tiempo-color (float ciclo-total)) 100)))
-    (/ (round (* resultado 100)) 100.0)))
+  (/ (round (* (* (/ tiempo-color (float ciclo-total)) 100) 100)) 100.0))
 
 ;; ========================================================
 ;; FUNCIÓN: informe-distribucion-60min-ext-1
