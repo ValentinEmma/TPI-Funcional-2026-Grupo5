@@ -284,7 +284,7 @@
 ;; IMPACTO: No destructiva
 ;; ========================================================
 (defun calcular-porcentaje (tiempo-color ciclo-total)
-  (/ (round (* (* (/ tiempo-color (float ciclo-total)) 100) 100)) 100.0))
+  (/ (round (* (/ tiempo-color (float ciclo-total)) 10000)) 100.0))
 
 ;; ========================================================
 ;; FUNCIÓN: informe-distribucion-60min-ext-1
@@ -295,10 +295,10 @@
 (defun informe-distribucion-60min-ext-1 ()
 	  (let ((ciclo-total (+ 90 6 120 9))) ; Duración de un ciclo completo (225)
 	    (list 
-	      (list 'ROJO     (calcular-porcentaje 90 ciclo-total))
-	      (list 'AMARILLO (calcular-porcentaje 6 ciclo-total))
-	      (list 'VERDE    (calcular-porcentaje 120 ciclo-total))
-          (list 'INTERMITENTE (calcular-porcentaje 9 ciclo-total)))))
+	      (list 'ROJO     (calcular-porcentaje 90 ciclo-total) '%)
+	      (list 'AMARILLO (calcular-porcentaje 6 ciclo-total) '%)
+	      (list 'VERDE    (calcular-porcentaje 120 ciclo-total) '%)
+          (list 'INTERMITENTE (calcular-porcentaje 9 ciclo-total) '%))))
 
 
 ;; Caso normal
