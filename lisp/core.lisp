@@ -1,22 +1,10 @@
-;; ========================================================
-;; FUNCIÓN: sistema-semaforo-ext-1
-;; NATURALEZA: Impura (realiza impresiones en pantalla)
-;; ESTRATEGIA: Selectiva y Modular
-;; IMPACTO: No destructiva
-;; ========================================================
+;;--DOCUMENTACION--
+;;Como grupo, decidimos dejar las funciones por separado y no realizar una 
+;;función principal de forma que el cliente pueda 
+;;elegir como las usará y cuántas veces llamará a las funciones.
 
-(defun sistema-semaforo-ext-1 (estadoActual cambiar segundos)
-			(if (and (symbolp estadoActual)(symbolp cambiar) (numberp segundos))
-
-			    (progn
-			        (print "=== SISTEMA DE SEMAFOROS ===")
-			        (print (transicion-ext-1 estadoActual cambiar))
-			        (print (timer-ext-1 segundos))
-			        (print (logging-auditoria segundos estadoActual cambiar))
-			    )
-			    (print "argumentos invalidos")
-			)	
-)
+;;Las funciones que tienen "ext-1" indican que fueron actualizadas para
+;;incluir el requerimiento de las luces intermitentes.
 
 ;; ========================================================
 ;; FUNCIÓN: transicion-ext-1
@@ -115,6 +103,10 @@
 ;(timer-ext-1 'hola)
 ;; Resultado esperado: ERROR
 
+;;--DOCUMENTACION--
+;;La función crea-informe fue agregada para crear el archivo y 
+;;que el encabezado del informe se escriba una única vez, porque no pudimos encontrar
+;;una forma de que el informe escriba una sola vez el encabezado.
 
 ;; ========================================================
 ;; FUNCIÓN: crea-informe
@@ -177,7 +169,7 @@
 
 ;; Se debe recibir:
 ;NIL (respuesta de que se creó el informe con el encabezado)
-;"Tiempo 100: la luz ha cambiado de EN-ROJO a AMARILLO" (linea que se muestra en el archivo) 
+;"2026-01-01- 12:01:40: la luz ha cambiado de EN-ROJO a AMARILLO" (linea que se muestra en el archivo) 
 
 ;; Caso alternativo
 ;(logging-auditoria 'en-rojo 'amarillo 80)
