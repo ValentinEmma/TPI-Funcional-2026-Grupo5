@@ -15,33 +15,28 @@
 
 (defun transicion-ext-1 (estadoActual cambiar)
   (cond 
-    ( (not (and (symbolp estadoActual) (symbolp cambiar)))
+      ((not (and (symbolp estadoActual) (symbolp cambiar)))
     	(pprint "error en los datos ingresados"))
-
-    ( (and (equal estadoActual 'en-rojo) (equal cambiar 'intermitente))
+	  
+	  ((and (equal estadoActual 'en-rojo) (equal cambiar 'intermitente))
          (list estadoActual "cambiar a intermitente"))
-
-    ( (and (equal estadoActual 'intermitente) (equal cambiar 'amarillo))
+	  
+	  ((and (equal estadoActual 'intermitente) (equal cambiar 'amarillo))
          (list estadoActual "cambiar a amarillo"))
-
-    ( (and (equal estadoActual 'en-amarillo)(equal cambiar 'intermitente))
+	  
+	  ((and (equal estadoActual 'en-amarillo)(equal cambiar 'intermitente))
          (list estadoActual "cambiar a intermitente"))
-
-    ( (and (equal estadoActual 'intermitente)(equal cambiar 'verde))
+	  
+	  ((and (equal estadoActual 'intermitente)(equal cambiar 'verde))
          (list estadoActual "cambiar a verde"))
-
-    ( (and (equal estadoActual 'verde)(equal cambiar 'intermitente))
+	  
+	  ((and (equal estadoActual 'verde)(equal cambiar 'intermitente))
          (list estadoActual "cambiar a intermitente"))
-
-    ( (and (equal estadoActual 'intermitente)(equal cambiar 'rojo))
+	  
+	  ((and (equal estadoActual 'intermitente)(equal cambiar 'rojo))
          (list estadoActual "cambiar a intermitente"))
-
-    (t
-         (list estadoActual "accion por defecto"))
-   )
-)
-
-
+	  
+	  (t (list estadoActual "accion por defecto"))))
 
 ;; Caso normal
 ;(transicion-ext-1 'en-rojo 'intermitente)
@@ -68,15 +63,14 @@
 
 (defun timer-ext-1 (segundos)
   (let ((tiempo-ciclo (mod segundos 225)))
-
-    (cond
-      ((and (>= tiempo-ciclo 0)(<= tiempo-ciclo 89))'ROJO)
-      ((and (>= tiempo-ciclo 90)(<= tiempo-ciclo 92))'INTERMITENTE)
-      ((and (>= tiempo-ciclo 93)(<= tiempo-ciclo 98))'AMARILLO)
-      ((and (>= tiempo-ciclo 99)(<= tiempo-ciclo 101))'INTERMITENTE)
-      ((and (>= tiempo-ciclo 102)(<= tiempo-ciclo 221))'VERDE)
-      ((and (>= tiempo-ciclo 222) (<= tiempo-ciclo 224)) 'INTERMITENTE)
-      (t 'ERROR))))
+	   (cond
+		   ((and (>= tiempo-ciclo 0)(<= tiempo-ciclo 89))'ROJO)
+		   ((and (>= tiempo-ciclo 90)(<= tiempo-ciclo 92))'INTERMITENTE)
+		   ((and (>= tiempo-ciclo 93)(<= tiempo-ciclo 98))'AMARILLO)
+		   ((and (>= tiempo-ciclo 99)(<= tiempo-ciclo 101))'INTERMITENTE)
+		   ((and (>= tiempo-ciclo 102)(<= tiempo-ciclo 221))'VERDE)
+		   ((and (>= tiempo-ciclo 222) (<= tiempo-ciclo 224)) 'INTERMITENTE)
+		   (t 'ERROR))))
 
 
 ;; Caso normal
@@ -117,9 +111,7 @@
 (defun crea-informe()
  	(with-open-file (stream "informe-ejecucion-semaforo.txt" :direction :output :if-exists :error :if-does-not-exist :create)
  		(format stream "Informe de Ejecución del Sistema Semafórico~%")
-   		(format stream "=========================================~%")
- 	)
- )
+   		(format stream "=========================================~%")))
 
 ;; ========================================================
 ;; FUNCIÓN: logging-auditoria 
@@ -138,7 +130,6 @@
  						1    ; día
  						1    ; mes
  						2026)))
-
 	(with-open-file (stream "informe-ejecucion-semaforo.txt" :direction :output :if-exists :append)   			
    			(format stream 
    				"~a - La luz ha cambiado de ~a a ~a~%"
@@ -150,14 +141,9 @@
 				  						" "
 				  						(:hour 2) ":"
 				  						(:min 2) ":"
-				  						(:sec 2))
-   				)
+				  						(:sec 2)))
    			estadoActual
-   			cambiar	
-   			)
-   )
-   )
-)
+   			cambiar	))))
 
 ;; ==========================
 ;; CASOS DE PRUEBA
@@ -196,8 +182,7 @@
       (let ((tiempo-un-ciclo (+ rojo amarillo verde (* intermitente 3)))) ; 
         (format t "El ciclo dura ~a segundos~%" tiempo-un-ciclo)
         tiempo-un-ciclo)
-      "Error: uno de los parametros no es un numero entero")
-  )
+      "Error: uno de los parametros no es un numero entero"))
 
 ;; ==========================
 ;; CASOS DE PRUEBA
@@ -229,10 +214,7 @@
 	(cond 
 		((> 35 total-ciclo) "recomendacion: aumentar el tiempo del ciclo para obtener entre 35 a 150 segundos")
 		((and (>= total-ciclo 35) (<= 150 total-ciclo)) "¡su tiempo esta en los estandares optimos!" )
-		((> total-ciclo 150) "recomendacion: disminuya su tiempo paraa obtener un ciclo entre 35 a 150 segundos") 
-
-	)
-)
+		((> total-ciclo 150) "recomendacion: disminuya su tiempo paraa obtener un ciclo entre 35 a 150 segundos")))
 ;; ==========================
 ;; CASOS DE PRUEBA
 ;; ==========================
@@ -266,11 +248,8 @@
 (defun ciclos-por-tiempo-ext-1 (minutos)
     (if (numberp minutos)
         (floor
-            (/ (* minutos 60) 225)
-        )
-        'ERROR
-    )
-)
+            (/ (* minutos 60) 225))
+        'ERROR))
 ;; Caso normal
 ;; 15 minutos = 900 segundos
 ;; 900 / 225 = 4 ciclos exactos
@@ -295,6 +274,15 @@
 ;; ERROR
 
 ;; ========================================================
+;; FUNCIÓN: calcular-porcentaje
+;; NATURALEZA: Pura
+;; ESTRATEGIA: Función de Orden Superior (aritmética básica)
+;; IMPACTO: No destructiva
+;; ========================================================
+(defun calcular-porcentaje (tiempo-color ciclo-total)
+  (/ (round (* (/ tiempo-color (float ciclo-total)) 10000)) 100.0))
+
+;; ========================================================
 ;; FUNCIÓN: informe-distribucion-60min-ext-1
 ;; NATURALEZA: Pura (Realiza cálculos matemáticos sin efectos secundarios)
 ;; ESTRATEGIA: Modular (Llamada a funciones de apoyo)
@@ -303,12 +291,10 @@
 (defun informe-distribucion-60min-ext-1 ()
 	  (let ((ciclo-total (+ 90 6 120 9))) ; Duración de un ciclo completo (225)
 	    (list 
-	      (list 'ROJO     (calcular-porcentaje 90 ciclo-total))
-	      (list 'AMARILLO (calcular-porcentaje 6 ciclo-total))
-	      (list 'VERDE    (calcular-porcentaje 120 ciclo-total))
-          (list 'INTERMITENTE (calcular-porcentaje 9 ciclo-total)))
-		)
-	 )
+	      (list 'ROJO     (calcular-porcentaje 90 ciclo-total) '%)
+	      (list 'AMARILLO (calcular-porcentaje 6 ciclo-total) '%)
+	      (list 'VERDE    (calcular-porcentaje 120 ciclo-total) '%)
+          (list 'INTERMITENTE (calcular-porcentaje 9 ciclo-total) '%))))
 
 
 ;; Caso normal
@@ -323,7 +309,7 @@
 ;; Caso alternativo
 ;; Ejecutar varias veces para verificar que siempre
 ;; devuelve los mismos porcentajes
-;(informe-distribucion-60min)
+;(informe-distribucion-60min-ext-1)
 
 ;; Resultado esperado:
 ;; ((ROJO 40.0)
@@ -331,14 +317,12 @@
 ;;  (VERDE 53.33)
 ;;  (INTERMITENTE 4.0))
 
-;; ========================================================
-;; FUNCIÓN: calcular-porcentaje
-;; NATURALEZA: Pura
-;; ESTRATEGIA: Función de Orden Superior (aritmética básica)
-;; IMPACTO: No destructiva
-;; ========================================================
-(defun calcular-porcentaje (tiempo-color tiempo-ciclo)
-  (let ((resultado (* (/ tiempo-color (float tiempo-ciclo)) 100)))
-    (/ (round (* resultado 100)) 100.0)))
+;; Caso ERROR
+;;(calcular-porcentaje 'noventa 225)
+
+;; Resultado esperado: 
+;; Error: 'noventa is not of type NUMBER'
+
+
    
 
