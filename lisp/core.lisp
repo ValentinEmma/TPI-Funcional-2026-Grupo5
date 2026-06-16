@@ -1,10 +1,19 @@
+;;--DOCUMENTACION--
+;;Como grupo, decidimos dejar las funciones por separado y no realizar una 
+;;función principal de forma que el cliente pueda 
+;;elegir como las usará y cuántas veces llamará a las funciones.
+
+;;Las funciones que tienen "ext-1" indican que fueron actualizadas para
+;;incluir el requerimiento de las luces intermitentes.
+
 ;====================================================0
 
 ;ACLARACION
 ;usamos el razonamiento en base a la clase virtual
 ;en tema de ciclo de semaforo
 ;el ciclo mas logico al q utilizamos es:
-; ROJO- AMARILLO- VERDE- AMARILLO / ROJO- AMARILLO - VERDE- AMARILLO
+; ROJO -INTERMITENTE - AMARILLO- INTERMITENTE -  VERDE- INTERMITENTE - AMARILLO -INTERMITENTE / ROJO -INTERMITENTE - 
+; AMARILLO- INTERMITENTE -  VERDE- INTERMITENTE - AMARILLO -INTERMITENTE 
 
 ;===================================================
 
@@ -14,137 +23,172 @@
 
 
 
+
 ;; ========================================================
-;; FUNCIÓN: transicion
+;; FUNCIÓN: transicion-ext-1
 ;; NATURALEZA: Pura
 ;; ESTRATEGIA: Selectiva y Modular
 ;; IMPACTO: No destructiva
 ;; ========================================================
-(defun transicion (estadoActual cambiar)
-	(if (and (symbolp estadoActual) (symbolp cambiar))  ;verifica si es simbol
-		(cond
-			((and (equal estadoActual 'en-rojo) (equal cambiar 'verde))
-				(list estadoActual "cambiar a verde"))
 
-			((and (equal estadoActual 'en-amarillo) (equal cambiar 'rojo))
-				(list estadoActual "cambiar a rojo"))
-			((and (equal estadoActual 'en-verde) (equal cambiar 'amarillo))  ;ejecuta en caso de cumplir la condicion
-				(list estadoActual "cambiar a amarillo"))
-			(t 
-				(list estadoActual "accion por defecto") 
-			)
-		)
-		'ERROR
-)
-)
+(defun transicion-ext-1 (estadoActual cambiar)
+  (cond 
+      ((not (and (symbolp estadoActual) (symbolp cambiar)))
+    	(pprint "error en los datos ingresados"))
+	  
+	  ((and (equal estadoActual 'en-rojo) (equal cambiar 'intermitente))
+         (list estadoActual "cambiar a intermitente"))
+	  
+	  ((and (equal estadoActual 'intermitente) (equal cambiar 'amarillo))
+         (list estadoActual "cambiar a amarillo"))
+	  
+	  ((and (equal estadoActual 'en-amarillo)(equal cambiar 'intermitente))
+         (list estadoActual "cambiar a intermitente"))
+	  
+	  ((and (equal estadoActual 'intermitente)(equal cambiar 'verde))
+         (list estadoActual "cambiar a verde"))
+	  
+	  ((and (equal estadoActual 'verde)(equal cambiar 'intermitente))
+         (list estadoActual "cambiar a intermitente"))
+	  
+	  ((and (equal estadoActual 'intermitente)(equal cambiar 'rojo))  ;condicionales para cada uno de los casos posibles q son aceptados
+         (list estadoActual "cambiar a intermitente"))
+	  
+	  (t (list estadoActual "accion por defecto")))) ;caso contrario muestra este mensaje
 
 ;; Caso normal
-;(transicion 'en-rojo 'verde)
-
-;; Resultado esperado:
-;; (EN-ROJO "cambiar a verde")
+;(transicion-ext-1 'en-rojo 'intermitente)
+;; Resultado esperado: (EN-ROJO "cambiar a intermitente")
 
 ;; Caso normal
-;(transicion 'en-verde 'amarillo)
-
-;; Resultado esperado:
-;; (EN-VERDE "cambiar a amarillo")
+;(transicion-ext-1 'intermitente 'en-amarillo)
+;; Resultado esperado: (INTERMITENTE "cambiar a amarillo")
 
 ;; Caso alternativo
-;(transicion 'en-rojo 'amarillo)
-
-;; Resultado esperado:
-;; (EN-ROJO "accion por defecto")
+;(transicion-ext-1 'en-rojo 'en-amarillo)
+;; Resultado esperado: (EN-ROJO "accion por defecto")
 
 ;; Caso de error
-;(transicion 10 'verde)
-
-;; Resultado esperado:
-;; ERROR
-
+;(transicion-ext-1 10 'en-verde)
+;; Resultado esperado: "error en los datos ingresados"
 
 ;; ========================================================
-;; FUNCIÓN: timer
+;; FUNCIÓN: timer-ext-1
 ;; NATURALEZA: Pura
 ;; ESTRATEGIA: Selectiva
 ;; IMPACTO: No destructiva
 ;; ========================================================
-(defun timer (segundos)
-	(let
-		((tiempo-ciclo (mod segundos 216)))
 
-	(cond
-		((and (>= tiempo-ciclo 0) (<= tiempo-ciclo 89)) 'ROJO)      ;condicionales para saber si el resto de la division en 216
-		((and (>= tiempo-ciclo 90) (<= tiempo-ciclo 95)) 'AMARILLO) ;entra en alguna de estas condiciones
-		((and (>=  tiempo-ciclo 96) (<= tiempo-ciclo 215)) 'VERDE)
-		(t 'ERROR)
-	)
+(defun timer-ext-1 (segundos)
+  (let ((tiempo-ciclo (mod segundos 234)))
+   	(cond
+   		((and (>= tiempo-ciclo 0)(<= tiempo-ciclo 89))'ROJO)   ;misma logica que el anterior iterancia
+   		((and (>= tiempo-ciclo 90)(<= tiempo-ciclo 92))'INTERMITENTE) ;pero con 234 como mod. ya q es la suma de
+   		((and (>= tiempo-ciclo 93)(<= tiempo-ciclo 98))'AMARILLO)			;rojo= 90 + intermitente=4*3 + amarillo=2*6 + verde =120
+  		((and (>= tiempo-ciclo 99)(<= tiempo-ciclo 101))'INTERMITENTE)
+  		((and (>= tiempo-ciclo 102)(<= tiempo-ciclo 221))'VERDE)
+  		((and (>= tiempo-ciclo 222) (<= tiempo-ciclo 224)) 'INTERMITENTE)
+  		((and (>= tiempo-ciclo 225)(<= tiempo-ciclo 233)) 'ROJO)
+ 		  (t 'ERROR)
+ 		)
+ 	)
 )
-)
 
-; Caso norma
-;(timer 50)
+;; Caso normal
+;(timer-ext-1 50)
+;; Resultado esperado: ROJO
 
-; Resultado esperado:
-; ROJO
+;; Caso normal (Cae justo en la primera intermitencia)
+;(timer-ext-1 91)
+;; Resultado esperado: INTERMITENTE
 
-; Caso normal
-;(timer 92)
+;; Caso normal
+;(timer-ext-1 95)
+;; Resultado esperado: AMARILLO
 
-; Resultado esperado:
-; AMARILLO
+;; Caso normal
+;(timer-ext-1 150)
+;; Resultado esperado: VERDE
 
-; Caso normal
-;(timer 150)
-
-; Resultado esperado:
-; VERDE
-
-; Caso alternativo
-; Comienza un nuevo ciclo
-;(timer 216)
-
-;; Resultado esperado:
-;; ROJO
+;; Caso alternativo (Comienza un nuevo ciclo exacto)
+;(timer-ext-1 225)
+;; Resultado esperado: ROJO
 
 ;; Caso de error
-;(timer 'hola)
+;(timer-ext-1 'hola)
+;; Resultado esperado: ERROR
 
-;; Resultado esperado:
-;; Error
+;;--DOCUMENTACION--
+;;La función crea-informe fue agregada para crear el archivo y 
+;;que el encabezado del informe se escriba una única vez, porque no pudimos encontrar
+;;una forma de que el informe escriba una sola vez el encabezado.
 
 ;; ========================================================
-;; FUNCIÓN: logging-auditoria
+;; FUNCIÓN: crea-informe
+;; NATURALEZA: Impura (escribe en archivo)
+;; ESTRATEGIA: Modular
+;; IMPACTO: No destructiva
+;; ========================================================
+(defun crea-informe()
+ 	(with-open-file (stream "informe-ejecucion-semaforo.txt" :direction :output :if-exists :error :if-does-not-exist :create)
+ 		(format stream "Informe de Ejecución del Sistema Semafórico~%")
+   		(format stream "=========================================~%")))
+
+;; ========================================================
+;; FUNCIÓN: logging-auditoria 
 ;; NATURALEZA: Impura
 ;; ESTRATEGIA: Modular
 ;; IMPACTO: No destructiva
 ;; ========================================================
-(defun logging-auditoria (segundos estadoActual cambiar) ;funcion modular q imprime el registro
-	(format t 
-		"~%Tiempo ~a: la luz ha cambiado de ~a a ~a~%" segundos estadoActual cambiar)
 
-		'REGISTRADO-EXITOSAMENTE
 
-)
+(defun logging-auditoria (segundos estadoActual cambiar)
+ 	(let ((fechainicio (local-time:encode-timestamp
+ 						0    ; nanosegundos
+ 						00   ; segundos
+ 						00   ; minutos
+ 						12   ; hora
+ 						1    ; día
+ 						1    ; mes
+ 						2026)))
+	(with-open-file (stream "informe-ejecucion-semaforo.txt" :direction :output :if-exists :append)   			;se abre el archivo
+   			(format stream 
+   				"~a - La luz ha cambiado de ~a a ~a~%" ;se
+					(local-time:format-timestring nil ;en caso de que no exista
+ 					(local-time:timestamp+ fechainicio segundos :sec) ;en caso de q si
+ 							:format '((:year 4) "-"
+				  						(:month 2) "-"
+				  						(:day 2) "-"
+				  						" "
+				  						(:hour 2) ":"
+				  						(:min 2) ":"
+				  						(:sec 2)))
+   			estadoActual
+   			cambiar	)))) ;valores a tomar
 
 ;; ==========================
 ;; CASOS DE PRUEBA
 ;; ==========================
 
-;; Caso normal
-;(sistema-semaforo 'en-rojo 'verde 50)
+;; CASO NORMAL
+;(crea-informe)
+;(logging-auditoria 100 'en-rojo 'amarillo)
 
-;; Caso normal
-;(sistema-semaforo 'en-verde 'amarillo 150)
+;; Se debe recibir:
+;NIL (respuesta de que se creó el informe con el encabezado)
+;"2026-01-01- 12:01:40: la luz ha cambiado de EN-ROJO a AMARILLO" (linea que se muestra en el archivo) 
 
 ;; Caso alternativo
-;(sistema-semaforo 'en-rojo 'amarillo 80)
+;(logging-auditoria 'en-rojo 'amarillo 80)
 
 ;; Caso de error
-;(sistema-semaforo 5 'verde 50)
+;llamar a crear-informe cuando ya fue creado, devolverá "ERROR"
+;(logging-auditoria 5 'verde 50)
+
+
 
 ;; ========================================================
-;; FUNCIÓN: duracion-ciclo
+;; FUNCIÓN: duracion-ciclo-ext-1
 ;; NATURALEZA: Impura (realiza salida por pantalla mediante
 ;; "format")
 ;; ESTRATEGIA: Función simple (no recursiva, no utiliza
@@ -153,92 +197,89 @@
 ;; de datos existente)
 ;; ========================================================
 
-(defun duracion-ciclo(rojo amarillo verde)
-	(if 
-		(and (integerp rojo)(integerp amarillo)(integerp verde))
-			(let ( (tiempo-un-ciclo (+ rojo (* 2 amarillo) verde)) ) ;guarda en tiempu un ciclo cuanto dura un ciclo
-				(format t "El ciclo dura ~a's~%" tiempo-un-ciclo)							
-				tiempo-un-ciclo ;esta linea es para q devuelva el valor sumado
-		)"Error: uno de los parametros no es un numero entero"
-	)
-)
 
+  (defun duracion-ciclo-ext-1 (rojo amarillo verde intermitente)
+  (if (and (integerp rojo) (integerp amarillo) (integerp verde) (integerp intermitente)) ;se verifica los parametros
+      (let ((tiempo-un-ciclo (+ rojo (* 2 amarillo) verde (* intermitente 4)))) ;se suma el ciclo r.i.a.i.v.i.a.i...
+        (format t "El ciclo dura ~a segundos~%" tiempo-un-ciclo)
+        tiempo-un-ciclo)   ;se devuelve la suma
+      "Error: uno de los parametros no es un numero entero"))
 
 ;; ==========================
 ;; CASOS DE PRUEBA
 ;; ==========================
+;; Caso normal (90s rojo, 6s amarillo, 120s verde, 3s intermitencia)
+;(duracion-ciclo-ext-1 90 6 120 3)
+;; Resultado esperado: "El ciclo dura 225 segundos" y devuelve 225.
 
-;;caso normal
-;(duracion-ciclo 30 10 60)
+;; Caso alternativo / Error (se ingresa un decimal)
+;(duracion-ciclo-ext-1 90.5 6 120 3)
+;; Resultado esperado: "Error: uno de los parametros no es un numero entero"
 
-;;caso normal
+;; Caso de error (se ingresan palabras)
+;(duracion-ciclo-ext-1 'noventa 'seis 'ciento-veinte 'tres)
+;; Resultado esperado: "Error: uno de los parametros no es un numero entero"
 
-;;caso error
-;(duracion-ciclo 1.2 20 1.2)
 
-;;caso error
-;(duracion-ciclo 'veinte 'cuarenta 'cincuenta)
+
 
 ;; ========================================================
-;; FUNCIÓN: recomendacion-ciclo
+;; FUNCIÓN: recomendacion-ciclo -ext-1
 ;; NATURALEZA: Impura (realiza salida por pantalla)
 ;; ESTRATEGIA: Función simple (implementada mediante cond)
 ;; IMPACTO: No destructiva (no modifica estructuras de
 ;; datos existentes)
 ;; ========================================================
 
-
-(defun recomendacion-ciclo (total-ciclo)
-    (cond
-        ((< total-ciclo 35)"recomendacion: aumentar el tiempo del ciclo para obtener entre 35 a 150 segundos")    ;verificacion de si es menora al numero
-        ((and (>= total-ciclo 35) (<= total-ciclo 150)) "su tiempo esta en los estandares optimos")               ;verifica si esta en estandar
-        (t "recomendacion: disminuya su tiempo para obtener un ciclo entre 35 a 150 segundos")					  ;si no es ninguno entonces es mayor
-    )
+(defun recomendacion-ciclo-ext-1 (total-ciclo)
+  (cond
+    ((< total-ciclo 35) "recomendacion: aumentar el tiempo del ciclo para obtener entre 35 a 150 segundos")
+    ((and (>= total-ciclo 35) (<= total-ciclo 150)) "¡su tiempo esta en los estandares optimos!")
+    ((> total-ciclo 150) "recomendacion: disminuya su tiempo para obtener un ciclo entre 35 a 150 segundos")
+    (t "error: valor invalido")  ;misma funcion q evalua en q condicion entra el ciclo total ya calculado previamente
+  )
 )
+
 
 ;; ==========================
 ;; CASOS DE PRUEBA
 ;; ==========================
 
 ;;caso normal
-;(recomendacion-ciclo 120)
+;(recomendacion-ciclo-ext-1 120)
 
 
-;;caso de ciclo demasiado corto
-;(recomendacion-ciclo 20)
+;; Caso alternativo (ciclo demasiado corto)
+;(recomendacion-ciclo-ext-1 20)
+;; Resultado esperado: "recomendacion: aumentar el tiempo del ciclo para obtener entre 35 a 150 segundos"
+
+;; Caso alternativo (ciclo demasiado largo)
+;(recomendacion-ciclo-ext-1 225)
+;; Resultado esperado: "recomendacion: disminuya su tiempo para obtener un ciclo entre 35 a 150 segundos"
 
 
-;; Caso de ciclo demasiado largo
-;(recomendacion-ciclo 160)
-
-
-
-;;caso error exepcion
 ;;caso error excepcion
 ;;ACLARACION: este tipo de error no sucederia 
-;;ya q se usaria la funcion "(duracion-ciclo)"
 ;;ya que se usaria la funcion "(duracion-ciclo)"
 ;;la cual ya verifica si los parametros son unicamente enteros
 ;(recomendacion-ciclo 120.3)
 
 ;; ========================================================
-;; FUNCIÓN: ciclos-por-tiempo
+;; FUNCIÓN: ciclos-por-tiempo-ext-1
 ;; NATURALEZA: Pura
 ;; ESTRATEGIA: Aritmética
 ;; IMPACTO: No destructiva
 ;; ========================================================
 
-(defun ciclos-por-tiempo (minutos)
-	(if (numberp minutos)
-		(floor
-		(/ (* minutos 60) 222)       ;dividido 222 q es la suma del ciclo logico (ROJO-AMARILLO-VERDE-AMARILLO)
-	)
-	'ERROR
-	)
-)
+(defun ciclos-por-tiempo-ext-1 (minutos)
+    (if (numberp minutos)
+        (floor
+            (/ (* minutos 60) 234)) ;nuevo numero para dividir (234)
+        'ERROR))
 ;; Caso normal
 ;; 15 minutos = 900 segundos
-;; 900 / 216 = 4 ciclos completos;(ciclos-por-tiempo 15)
+;; 900 / 225 = 4 ciclos exactos
+;(ciclos-por-tiempo-ext-1 15)
 
 ;; Resultado esperado:
 ;; 4
@@ -246,51 +287,17 @@
 ;; Caso alternativo
 ;; Tiempo menor a un ciclo completo
 ;; 3 minutos = 180 segundos
-;(ciclos-por-tiempo 3)
+;(ciclos-por-tiempo-ext-1 3)
 
 ;; Resultado esperado:
 ;; 0
 
 ;; Caso de error
 ;; Se ingresa un símbolo
-;(ciclos-por-tiempo 'hola)
+;(ciclos-por-tiempo-ext-1 'hola)
 
 ;; Resultado esperado:
 ;; ERROR
-
-;; ========================================================
-;; FUNCIÓN: informe-distribucion-60min
-;; NATURALEZA: Pura (Realiza cálculos matemáticos sin efectos secundarios)
-;; ESTRATEGIA: Modular (Llamada a funciones de apoyo)
-;; IMPACTO: No destructiva
-;; ========================================================
-(defun informe-distribucion-60min ()
-	(let ((ciclo-total (+ 90 12 120))) ; Duración de un ciclo completo (222s)
-		(list 
-			(list 'ROJO     (calcular-porcentaje 90 ciclo-total))
-			(list 'AMARILLO (calcular-porcentaje 12 ciclo-total))
-			(list 'VERDE    (calcular-porcentaje 120 ciclo-total)) ;usamos funcion q esta debajo
-		)
-	)
-)
-
-;; Caso normal
-;(informe-distribucion-60min)
-
-;; Resultado esperado:
-;; ((ROJO 41.67)
-;;  (AMARILLO 2.78)
-;;  (VERDE 55.56))
-
-;; Caso alternativo
-;; Ejecutar varias veces para verificar que siempre
-;; devuelve los mismos porcentajes
-;(informe-distribucion-60min)
-
-;; Resultado esperado:
-;; ((ROJO 41.67)
-;;  (AMARILLO 2.78)
-;;  (VERDE 55.56))
 
 ;; ========================================================
 ;; FUNCIÓN: calcular-porcentaje
@@ -298,8 +305,49 @@
 ;; ESTRATEGIA: Función de Orden Superior (aritmética básica)
 ;; IMPACTO: No destructiva
 ;; ========================================================
-(defun calcular-porcentaje (tiempo-color tiempo-ciclo)
-	(let ((resultado (* (/ tiempo-color (float tiempo-ciclo)) 100)))    ;proceso logico para sacar porcentaje
-		(/ (round (* resultado 100)) 100.0)
-	)
-)                        												
+(defun calcular-porcentaje (tiempo-color ciclo-total)
+  (/ (round (* (/ tiempo-color (float ciclo-total)) 10000)) 100.0))
+
+;; ========================================================
+;; FUNCIÓN: informe-distribucion-60min-ext-1
+;; NATURALEZA: Pura (Realiza cálculos matemáticos sin efectos secundarios)
+;; ESTRATEGIA: Modular (Llamada a funciones de apoyo)
+;; IMPACTO: No destructiva
+;; ========================================================
+(defun informe-distribucion-60min-ext-1 ()
+	  (let ((ciclo-total (+ 90 12 120 12))) ; Duración de un ciclo completo (234)
+	    (list 
+	      (list 'ROJO     (calcular-porcentaje 90 ciclo-total) '%)     ;se usa funcion calcular porcentaje q esta codeado abajo
+	      (list 'AMARILLO (calcular-porcentaje 12 ciclo-total) '%)
+	      (list 'VERDE    (calcular-porcentaje 120 ciclo-total) '%)
+          (list 'INTERMITENTE (calcular-porcentaje 12 ciclo-total) '%))))
+
+
+;; Caso normal
+;(informe-distribucion-60min-ext-1)
+
+;; Resultado esperado:
+;; ((ROJO 40.0)
+;;  (AMARILLO 2.67)
+;;  (VERDE 53.33)
+;;  (INTERMITENTE 4.0))
+
+;; Caso alternativo
+;; Ejecutar varias veces para verificar que siempre
+;; devuelve los mismos porcentajes
+;(informe-distribucion-60min-ext-1)
+
+;; Resultado esperado:
+;; ((ROJO 40.0)
+;;  (AMARILLO 2.67)
+;;  (VERDE 53.33)
+;;  (INTERMITENTE 4.0))
+
+;; Caso ERROR
+;;(calcular-porcentaje 'noventa 225)
+
+;; Resultado esperado: 
+;; Error: 'noventa is not of type NUMBER'
+
+
+   
