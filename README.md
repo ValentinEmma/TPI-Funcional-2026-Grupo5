@@ -25,6 +25,9 @@ Desarrollar un sistema funcional de semáforos inteligentes utilizando programac
  Estructura del proyecto
 
 * /lisp = funciones principales en Common Lisp
-* /haskell = implementación en Haskell
 * /docs = documentación e informe
-* /tests = casos de prueba
+* /comparativa = codigo con haskell
+
+
+
+VIDEO DEFENSA: https://youtu.be/FuG432fZZQs 
