@@ -30,4 +30,4 @@ Desarrollar un sistema funcional de semáforos inteligentes utilizando programac
 
 
 
-VIDEO DEFENSA: https://youtu.be/FuG432fZZQs 
+VIDEO DEFENSA: https://www.youtube.com/watch?v=SwWrC9PcbKg
