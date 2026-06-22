@@ -314,7 +314,7 @@
 ;; ESTRATEGIA: Modular (Llamada a funciones de apoyo)
 ;; IMPACTO: No destructiva
 ;; ========================================================
-(defun informe-distribucion-60min-ext-1 ()
+(defun generar-informe-distribucion-60min-ext-1 ()
 	  (let ((ciclo-total (+ 90 12 120 12))) ; Duración de un ciclo completo (234)
 	    (list 
 	      (list 'ROJO     (calcular-porcentaje 90 ciclo-total) '%)     ;se usa funcion calcular porcentaje q esta codeado abajo
